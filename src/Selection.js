@@ -1,14 +1,18 @@
-const N = 10;
+let N = 10;
 let values = [];
 let time = 0;
 
-const speed = 10;
+let speed = 10;
 
 let selected;
 let min;
 
+let game = false;
+
 const itemDOM = document.querySelector(".items");
 const maxDOM = document.querySelector(".max");
+
+let tm1, tm2, tm3;
 
 const createItemElement = (index, value) => {
   const size = 100 / N;
@@ -25,7 +29,7 @@ const createItemElement = (index, value) => {
 
 const mark_as_selected = (index, color) => {
   time += 1;
-  setTimeout(() => {
+  tm1 = setTimeout(() => {
     const d = document.querySelectorAll(".item")[index];
     d.style.background = color;
   }, speed * time);
@@ -33,13 +37,16 @@ const mark_as_selected = (index, color) => {
 
 const mark_as_default = (index) => {
   time += 1;
-  setTimeout(() => {
+  tm2 = setTimeout(() => {
     const d = document.querySelectorAll(".item")[index];
     d.style.background = "#bbb";
   }, speed * time);
 };
 
 const init = () => {
+  values = [];
+  itemDOM.innerHTML = "";
+  time = 0;
   for (var i = 0; i < N; i++) {
     values.push(Math.floor(Math.random() * 90) + 10);
     itemDOM.appendChild(createItemElement(i, values[i]));
@@ -50,7 +57,7 @@ const init = () => {
 
 const swap = (i, j) => {
   time += 1;
-  setTimeout(() => {
+  tm3 = setTimeout(() => {
     if (values[i] < values[j]) {
       const a = values[i];
       const b = values[j];
@@ -71,7 +78,6 @@ const swap = (i, j) => {
 };
 
 const select_sort = () => {
-  let cnt = 0;
   for (var i = 0; i < N; i += 1) {
     mark_as_selected(i, "green");
     for (var j = i + 1; j < N; j += 1) {
@@ -83,4 +89,34 @@ const select_sort = () => {
   }
 };
 
-init();
+const onClickSubmit = () => {
+  //alert();
+  // setTimeout(())
+  restart();
+  const countDocument = document.getElementById("element_count");
+  const radios = document.getElementsByName("speed");
+  for (let i = 0; i < radios.length; i++) {
+    if (radios[i].checked) {
+      speed = radios[i].value;
+      break;
+    }
+  }
+
+  N = countDocument.value;
+  init();
+};
+
+const restart = () => {
+  for (var i = 0; i < tm1; i++) {
+    clearTimeout(i);
+  }
+  for (var i = 0; i < tm2; i++) {
+    clearTimeout(i);
+  }
+
+  for (var i = 0; i < tm3; i++) {
+    clearTimeout(i);
+  }
+
+  //alert();
+};
